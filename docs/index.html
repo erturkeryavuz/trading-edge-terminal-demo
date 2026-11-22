@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trading Edge Terminal — Frozen Historical Financial Research Showcase</title>
+  <meta name="description" content="Frozen historical portfolio showcase of Trading Edge Terminal: U.S. SEC EDGAR XBRL fundamentals, U.S. Treasury yield curves, explainable non-advisory accounting scores, and synthetic M1 bar-revision replay." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div class="frozen-ribbon" role="banner">
+    <div class="frozen-ribbon-inner">
+      <div class="ribbon-left">
+        <span class="ribbon-badge">Frozen Research Showcase</span>
+        <span>Dated Snapshot: <strong>2026-11-12</strong> · Public-domain SEC EDGAR &amp; U.S. Treasury + Synthetic M1 Fixture · <strong>Not Live Data</strong> · <strong>Not Investment Advice</strong></span>
+      </div>
+      <div class="ribbon-links">
+        <a href="notices.html">Data Notices &amp; Provenance</a>
+        <a href="https://github.com/erturkeryavuz" target="_blank" rel="noopener noreferrer">Portfolio Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-row">
+        <div class="brand-lockup">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <rect x="1" y="1" width="38" height="38" rx="9" fill="#151f30" stroke="#d9a441" stroke-width="1.5" />
+            <path d="M9 28V17M15 28V13M21 28V19M27 28V10" stroke="#5b9cf6" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M9 24L15 17L21 21L31 11" stroke="#d9a441" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="31" cy="11" r="2.6" fill="#d9a441" />
+          </svg>
+          <div>
+            <h1 class="brand-title">Trading Edge Terminal</h1>
+            <p class="brand-sub">U.S. Fundamental Research, Accounting Provenance &amp; Synthetic Revision Replay</p>
+          </div>
+        </div>
+        <div class="header-meta" id="header-meta"></div>
+      </div>
+
+      <nav class="nav-tabs" role="tablist" aria-label="Research terminal sections" id="main-tablist">
+        <button class="nav-tab" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" data-tab="overview">Overview</button>
+        <button class="nav-tab" role="tab" id="tab-company" aria-controls="panel-company" aria-selected="false" tabindex="-1" data-tab="company">Company Research</button>
+        <button class="nav-tab" role="tab" id="tab-screener" aria-controls="panel-screener" aria-selected="false" tabindex="-1" data-tab="screener">Screener &amp; Peers</button>
+        <button class="nav-tab" role="tab" id="tab-score" aria-controls="panel-score" aria-selected="false" tabindex="-1" data-tab="score">Accounting Score</button>
+        <button class="nav-tab" role="tab" id="tab-risks" aria-controls="panel-risks" aria-selected="false" tabindex="-1" data-tab="risks">Risk Inspector</button>
+        <button class="nav-tab" role="tab" id="tab-treasury" aria-controls="panel-treasury" aria-selected="false" tabindex="-1" data-tab="treasury">Treasury Macro</button>
+        <button class="nav-tab" role="tab" id="tab-replay" aria-controls="panel-replay" aria-selected="false" tabindex="-1" data-tab="replay">Revision Replay</button>
+        <button class="nav-tab" role="tab" id="tab-architecture" aria-controls="panel-architecture" aria-selected="false" tabindex="-1" data-tab="architecture">Architecture &amp; Evidence</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="main-container">
+    <section id="panel-overview" class="view-panel" role="tabpanel" aria-labelledby="tab-overview"></section>
+    <section id="panel-company" class="view-panel" role="tabpanel" aria-labelledby="tab-company" hidden></section>
+    <section id="panel-screener" class="view-panel" role="tabpanel" aria-labelledby="tab-screener" hidden></section>
+    <section id="panel-score" class="view-panel" role="tabpanel" aria-labelledby="tab-score" hidden></section>
+    <section id="panel-risks" class="view-panel" role="tabpanel" aria-labelledby="tab-risks" hidden></section>
+    <section id="panel-treasury" class="view-panel" role="tabpanel" aria-labelledby="tab-treasury" hidden></section>
+    <section id="panel-replay" class="view-panel" role="tabpanel" aria-labelledby="tab-replay" hidden></section>
+    <section id="panel-architecture" class="view-panel" role="tabpanel" aria-labelledby="tab-architecture" hidden></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Trading Edge Terminal (FROZEN — M2 Unit 4 Historical Showcase)</strong> · Independent portfolio project by Ertürk Eryavuz · Zero backend, zero brokerage execution, zero live feeds.
+      </div>
+      <div>
+        <a href="notices.html">Third-Party Data Notices &amp; Provenance</a> ·
+        <a href="THIRD-PARTY-NOTICES.md">Notices (Markdown)</a>
+      </div>
+    </div>
+  </footer>
+
+  <noscript>
+    <div class="main-container">
+      <div class="notice notice-amber">
+        <strong>JavaScript Required for Interactive Views:</strong> This static showcase renders all charts, tables, screening filters, and synthetic revision replays client-side without a backend. Enable JavaScript to explore the 2026-11-12 SEC EDGAR &amp; U.S. Treasury research snapshot.
+      </div>
+    </div>
+  </noscript>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
