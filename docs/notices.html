@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Data Notices &amp; Provenance — Trading Edge Terminal Showcase</title>
+  <title>Data Notices &amp; Provenance — Trading Edge Terminal</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="frozen-ribbon">
-    <div class="frozen-ribbon-inner">
+  <div class="context-ribbon">
+    <div class="context-ribbon-inner">
       <div class="ribbon-left">
-        <span class="ribbon-badge">Data Notices &amp; Provenance</span>
-        <span>Trading Edge Terminal — Frozen Historical Research Showcase</span>
+        <span class="ribbon-dot" aria-hidden="true"></span>
+        <span>Trading Edge Terminal · Data Notices, Provenance &amp; Scope Boundaries</span>
       </div>
       <div class="ribbon-links">
-        <a href="index.html">← Return to Research Terminal</a>
+        <a href="index.html">← Return to Terminal</a>
       </div>
     </div>
   </div>
@@ -23,35 +23,35 @@
     <div class="section-head">
       <div>
         <h2>Third-Party Data Notices, Provenance &amp; Boundaries</h2>
-        <p>Complete source attribution, redistribution basis, and non-advisory disclosures for this static showcase.</p>
+        <p>Source attribution, public-domain basis, synthetic fixture provenance, and scope boundaries for the static browser preview.</p>
       </div>
-      <a class="btn" href="index.html">← Back to Showcase</a>
+      <a class="btn btn-sm" href="index.html">← Back to Terminal</a>
     </div>
 
-    <div class="notice notice-amber">
-      <strong>Non-Affiliation &amp; Non-Advisory Notice:</strong> Trading Edge Terminal is an independent frozen historical research showcase by Ertürk Eryavuz. It is <strong>not</strong> live market data, <strong>not</strong> financial or investment advice, performs <strong>zero</strong> brokerage execution, and is not affiliated with or endorsed by the SEC, U.S. Department of the Treasury, NYSE, Nasdaq, or any listed issuer.
+    <div class="notice notice-caution">
+      <strong>Research Scope &amp; Non-Affiliation:</strong> Trading Edge Terminal is an independent software engineering project by Ertürk Eryavuz. This static browser preview uses a fixed historical public-data snapshot (2026-11-12) alongside a synthetic bar-revision fixture. It is <strong>not</strong> live market data, <strong>not</strong> financial or investment advice, performs <strong>no</strong> brokerage execution, and is not affiliated with or endorsed by the U.S. Securities and Exchange Commission (SEC), the U.S. Department of the Treasury, NYSE, Nasdaq, or any listed company.
     </div>
 
     <div class="card">
-      <h3>1. U.S. SEC EDGAR Public Filing Facts (Snapshot: 2026-11-12)</h3>
+      <h3>1. U.S. SEC EDGAR Public Filing Facts (Historical Snapshot: 2026-11-12)</h3>
       <p class="muted"><strong>Provider:</strong> U.S. Securities and Exchange Commission (<a href="https://www.sec.gov/edgar/searchedgar/companysearch" target="_blank" rel="noopener noreferrer">SEC EDGAR</a> — <code>data.sec.gov</code>).</p>
-      <p>Includes minimal normalized numeric GAAP accounting facts, derived ratios, filing dates, form types, and official EDGAR accession links for 17 operating equities plus non-operating ETF boundary metadata for <code>SPY</code>. Raw U.S. federal SEC EDGAR numerical filing data is generally in the U.S. public domain (<code>17 U.S.C. § 105</code>). Zero third-party filing exhibits, logos, or personal records are bundled. Figures reflect a fixed historical snapshot retrieved on <strong>2026-11-12</strong>.</p>
+      <p>Includes minimal normalized numeric GAAP accounting facts, derived ratios, filing dates, form types, and official EDGAR accession links for 17 U.S. operating companies plus non-operating ETF coverage metadata for <code>SPY</code>. Only raw factual numeric disclosures and filing metadata are extracted—no third-party filing prose narratives, exhibits, corporate logos, or personal executive records are bundled (note that <code>17 U.S.C. § 105</code> applies to U.S. federal government works rather than issuer-authored filing prose). Figures reflect a fixed historical snapshot retrieved on <strong>2026-11-12</strong> and are not refreshed live.</p>
     </div>
 
     <div class="card">
       <h3>2. U.S. Department of the Treasury Par Yield Curves (2025-10-28 to 2026-11-10)</h3>
       <p class="muted"><strong>Provider:</strong> U.S. Department of the Treasury (<a href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates/" target="_blank" rel="noopener noreferrer">Daily Treasury Par Yield Curve Rates</a>).</p>
-      <p>Includes dated <code>1M</code>–<code>30Y</code> par yield rates for <code>2026-11-10</code> and <code>260</code> dated spread history observations (from a <code>465</code>-observation historical acquisition starting <code>2025-01-02</code>). Compiled by U.S. federal officers and generally in the U.S. public domain (<code>17 U.S.C. § 105</code>), cited without implying Treasury endorsement.</p>
+      <p>Includes 13 maturity tenors (<code>1M</code>–<code>30Y</code>) for <code>2026-11-10</code> and <code>260</code> dated spread observations (from a <code>465</code>-observation historical acquisition starting <code>2025-01-02</code>). Compiled by U.S. federal officers and generally in the U.S. public domain (<code>17 U.S.C. § 105</code>), cited without implying Treasury endorsement.</p>
     </div>
 
     <div class="card">
-      <h3>3. Synthetic M1 Revision &amp; Breakout Replay Data</h3>
-      <p>All 1-minute bar prices, revisions, duplicates, and breakout events displayed in the <strong>Revision Replay</strong> view are <strong>100% synthetic fabricated numbers</strong> authored solely to demonstrate deterministic point-in-time (<code>--as-of</code>) anti-lookahead semantics. They are not real stock prices and do not represent a validated or profitable trading strategy.</p>
+      <h3>3. Synthetic Bar-Revision &amp; Breakout Replay Fixture</h3>
+      <p>All 1-minute OHLCV bar values, duplicates, delayed revisions, and breakout evaluations in the <strong>Revision Replay</strong> workspace are <strong>100% synthetic fabricated numbers</strong> (<code>fixture:TEST</code>) authored to verify point-in-time (<code>as-of</code>) anti-lookahead semantics. Session validation uses a bounded <code>2026–2027</code> NYSE Regular Trading Hours schedule (<code>US-RTH-2026-2027/v1</code>). These outputs are not real market prices and do not represent a validated or profitable trading strategy.</p>
     </div>
 
     <div class="card">
-      <h3>4. Original Code, Charts &amp; License Status</h3>
-      <p>All HTML, CSS, JavaScript, SVG graphics, financial charts, and diagrams in this showcase were authored originally with zero external runtime libraries, zero third-party fonts/images, and zero tracking scripts. No open-source repository license is asserted without separate owner authorization.</p>
+      <h3>4. Original Engineering Scope &amp; License Status</h3>
+      <p>The original Trading Edge Terminal engineering repository is a private, frozen Python 3.9+ and SQLite local-first workstation; the original Python engine and SQLite database do not execute inside this static GitHub Pages preview. All HTML, CSS, JavaScript, and SVG graphics in this preview were authored originally with zero external runtime libraries, third-party fonts, or tracking scripts. No open-source root <code>LICENSE</code> is declared without separate owner authorization.</p>
     </div>
   </main>
 </body>

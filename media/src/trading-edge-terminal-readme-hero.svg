@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#101113" />
+      <stop offset="100%" stop-color="#15171B" />
+    </linearGradient>
+    <radialGradient id="subtleGlow" cx="72%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#B49A78" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#101113" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bgGrad)" />
+  <rect width="1600" height="900" fill="url(#subtleGlow)" />
+  <line x1="72" y1="824" x2="1528" y2="824" stroke="#262A31" stroke-width="1" />
+
+  <!-- Left Identity Column -->
+  <g transform="translate(76, 138)">
+    <rect x="0" y="0" width="46" height="46" rx="10" fill="#1C1E22" stroke="#B49A78" stroke-width="1.6" />
+    <path d="M11 33V22M18 33V17M25 33V23M32 33V13" stroke="#758D92" stroke-width="2.4" stroke-linecap="round" />
+    <path d="M11 29L18 21L25 25L36 13" stroke="#B49A78" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="36" cy="13" r="2.8" fill="#F1EDE5" />
+    <text x="64" y="29" fill="#B49A78" font-size="13" font-weight="600" letter-spacing="2.2" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">FINANCIAL RESEARCH TERMINAL</text>
+  </g>
+
+  <text x="76" y="296" fill="#F1EDE5" font-size="68" font-weight="700" font-family="Georgia, 'Iowan Old Style', serif">Trading Edge</text>
+  <text x="76" y="370" fill="#B49A78" font-size="68" font-weight="700" font-style="italic" font-family="Georgia, 'Iowan Old Style', serif">Terminal</text>
+
+  <text x="76" y="438" fill="#D5D0C6" font-size="22" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">SEC EDGAR corporate fundamentals,</text>
+  <text x="76" y="472" fill="#D5D0C6" font-size="22" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">U.S. Treasury yield curves, and</text>
+  <text x="76" y="506" fill="#D5D0C6" font-size="22" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">point-in-time observation replay.</text>
+
+  <!-- Concise Stack Pills -->
+  <g transform="translate(76, 566)">
+    <rect x="0" y="0" width="132" height="36" rx="6" fill="#1C1E22" stroke="#343942" stroke-width="1.2" />
+    <text x="66" y="23" fill="#F1EDE5" font-size="13.5" font-weight="600" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">Python 3.9+</text>
+
+    <rect x="146" y="0" width="98" height="36" rx="6" fill="#1C1E22" stroke="#343942" stroke-width="1.2" />
+    <text x="195" y="23" fill="#F1EDE5" font-size="13.5" font-weight="600" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">SQLite</text>
+
+    <rect x="258" y="0" width="198" height="36" rx="6" fill="#1C1E22" stroke="#343942" stroke-width="1.2" />
+    <text x="357" y="23" fill="#F1EDE5" font-size="13.5" font-weight="600" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">SEC EDGAR &amp; Treasury</text>
+  </g>
+
+  <!-- Right Desktop Terminal Frame -->
+  <rect x="664" y="68" width="864" height="718" rx="14" fill="#181A1E" stroke="#30353E" stroke-width="1.5" />
+  <!-- Window Chrome -->
+  <rect x="664" y="68" width="864" height="44" rx="14" fill="#1C1E22" />
+  <rect x="664" y="98" width="864" height="14" fill="#1C1E22" />
+  <line x1="664" y1="112" x2="1528" y2="112" stroke="#2D3139" stroke-width="1" />
+  <circle cx="690" cy="90" r="5" fill="#3E4450" />
+  <circle cx="708" cy="90" r="5" fill="#3E4450" />
+  <circle cx="726" cy="90" r="5" fill="#3E4450" />
+  <text x="752" y="94" fill="#A4ABB6" font-size="12.5" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">Overview · Companies · Screener · Scoring &amp; Risks · Treasury · Replay</text>
+
+  <!-- Panel 1: U.S. Treasury Daily Par Yield Curve (13 Tenors, 2026-11-10) -->
+  <rect x="692" y="132" width="808" height="316" rx="10" fill="#141619" stroke="#2B2F37" stroke-width="1.2" />
+  <text x="716" y="162" fill="#F1EDE5" font-size="15.5" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">U.S. Treasury Par Yield Curve</text>
+  <text x="954" y="162" fill="#8E96A3" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">2026-11-10 · 1M–30Y</text>
+  <text x="1478" y="162" fill="#B49A78" font-size="13" font-weight="700" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">10Y 4.98% · 10Y–2Y +0.25%</text>
+
+  <line x1="746.0" y1="372.2" x2="1486.0" y2="372.2" stroke="#282C34" stroke-width="1" /><text x="736.0" y="376.2" fill="#8E96A3" font-size="11.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">4.0%</text>
+    <line x1="746.0" y1="315.3" x2="1486.0" y2="315.3" stroke="#282C34" stroke-width="1" /><text x="736.0" y="319.3" fill="#8E96A3" font-size="11.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">4.5%</text>
+    <line x1="746.0" y1="258.3" x2="1486.0" y2="258.3" stroke="#282C34" stroke-width="1" /><text x="736.0" y="262.3" fill="#8E96A3" font-size="11.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">5.0%</text>
+    <line x1="746.0" y1="201.4" x2="1486.0" y2="201.4" stroke="#282C34" stroke-width="1" /><text x="736.0" y="205.4" fill="#8E96A3" font-size="11.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">5.5%</text>
+  <path d="M746.00,366.53 L807.67,348.31 L869.33,338.06 L931.00,340.33 L992.67,328.94 L1054.33,308.44 L1116.00,289.08 L1177.67,287.94 L1239.33,279.97 L1301.00,270.86 L1362.67,260.61 L1424.33,213.92 L1486.00,218.47 L1486.00,395.00 L746.00,395.00 Z" fill="rgba(180,154,120,0.14)" />
+  <path d="M746.00,366.53 L807.67,348.31 L869.33,338.06 L931.00,340.33 L992.67,328.94 L1054.33,308.44 L1116.00,289.08 L1177.67,287.94 L1239.33,279.97 L1301.00,270.86 L1362.67,260.61 L1424.33,213.92 L1486.00,218.47" fill="none" stroke="#B49A78" stroke-width="2.5" />
+  <circle cx="746.00" cy="366.53" r="4.5" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="746.00" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">1M</text>
+    <circle cx="807.67" cy="348.31" r="3.2" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="807.67" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">2M</text>
+    <circle cx="869.33" cy="338.06" r="3.2" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="869.33" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">3M</text>
+    <circle cx="931.00" cy="340.33" r="3.2" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="931.00" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">4M</text>
+    <circle cx="992.67" cy="328.94" r="3.2" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="992.67" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">6M</text>
+    <circle cx="1054.33" cy="308.44" r="3.2" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="1054.33" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">1Y</text>
+    <circle cx="1116.00" cy="289.08" r="4.5" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="1116.00" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">2Y</text>
+    <circle cx="1177.67" cy="287.94" r="3.2" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="1177.67" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">3Y</text>
+    <circle cx="1239.33" cy="279.97" r="3.2" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="1239.33" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">5Y</text>
+    <circle cx="1301.00" cy="270.86" r="3.2" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="1301.00" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">7Y</text>
+    <circle cx="1362.67" cy="260.61" r="4.5" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="1362.67" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">10Y</text>
+    <circle cx="1424.33" cy="213.92" r="3.2" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="1424.33" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">20Y</text>
+    <circle cx="1486.00" cy="218.47" r="4.5" fill="#B49A78" stroke="#141619" stroke-width="1.5" />
+    <text x="1486.00" y="415.0" fill="#A4ABB6" font-size="11" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">30Y</text>
+
+  <!-- Panel 2 (Bottom-Left): Core Watchlist SEC Fundamentals -->
+  <rect x="692" y="468" width="400" height="292" rx="10" fill="#141619" stroke="#2B2F37" stroke-width="1.2" />
+  <text x="716" y="498" fill="#F1EDE5" font-size="15" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">SEC EDGAR Fundamentals</text>
+  <text x="716" y="518" fill="#8E96A3" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">TTM Snapshot · 2026-11-12</text>
+  <text x="716" y="544" fill="#7B8391" font-size="10.5" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">TICKER</text>
+  <text x="938" y="544" fill="#7B8391" font-size="10.5" font-weight="600" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">REV</text>
+  <text x="1008" y="544" fill="#7B8391" font-size="10.5" font-weight="600" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">OP %</text>
+  <text x="1072" y="544" fill="#7B8391" font-size="10.5" font-weight="600" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">SCORE</text>
+  <line x1="712" y1="552" x2="1076" y2="552" stroke="#2D3139" stroke-width="1" />
+  <text x="716" y="576" fill="#F1EDE5" font-size="13.5" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">MSFT</text><text x="780" y="576" fill="#A4ABB6" font-size="12.5" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">Microsoft</text><text x="938" y="576" fill="#F1EDE5" font-size="12.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">$346.4B</text><text x="1008" y="576" fill="#758D92" font-size="12.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">47.1%</text><text x="1072" y="576" fill="#B49A78" font-size="13" font-weight="700" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">92</text><line x1="712" y1="592" x2="1076" y2="592" stroke="#282C34" stroke-width="1" /><text x="716" y="620" fill="#F1EDE5" font-size="13.5" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">AAPL</text><text x="780" y="620" fill="#A4ABB6" font-size="12.5" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">Apple Inc.</text><text x="938" y="620" fill="#F1EDE5" font-size="12.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">$478.8B</text><text x="1008" y="620" fill="#758D92" font-size="12.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">33.0%</text><text x="1072" y="620" fill="#B49A78" font-size="13" font-weight="700" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">91.5</text><line x1="712" y1="636" x2="1076" y2="636" stroke="#282C34" stroke-width="1" /><text x="716" y="664" fill="#F1EDE5" font-size="13.5" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">NVDA</text><text x="780" y="664" fill="#A4ABB6" font-size="12.5" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">NVIDIA</text><text x="938" y="664" fill="#F1EDE5" font-size="12.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">$303.0B</text><text x="1008" y="664" fill="#758D92" font-size="12.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">65.2%</text><text x="1072" y="664" fill="#B49A78" font-size="13" font-weight="700" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">90.5</text><line x1="712" y1="680" x2="1076" y2="680" stroke="#282C34" stroke-width="1" /><text x="716" y="708" fill="#A4ABB6" font-size="13.5" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">SPY</text><text x="780" y="708" fill="#8E96A3" font-size="12.5" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">SPDR S&P 500 ETF</text><rect x="962" y="694" width="110" height="20" rx="4" fill="rgba(117,141,146,0.16)" stroke="rgba(117,141,146,0.45)" stroke-width="1" /><text x="1017" y="708" fill="#A6C2C8" font-size="10.5" font-weight="700" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">NON-IMPUTED</text>
+
+  <!-- Panel 3 (Bottom-Right): Synthetic Point-in-Time As-Of Replay -->
+  <rect x="1110" y="468" width="390" height="292" rx="10" fill="#141619" stroke="#2B2F37" stroke-width="1.2" />
+  <text x="1132" y="498" fill="#F1EDE5" font-size="15" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">As-Of Revision Replay</text>
+  <text x="1132" y="518" fill="#8E96A3" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">Synthetic 1m bars · Cutoff 14:34:02Z</text>
+  <line x1="1142.0" y1="699.8" x2="1488.0" y2="699.8" stroke="#282C34" stroke-width="1" /><text x="1134.0" y="703.3" fill="#8E96A3" font-size="10.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">8</text>
+    <line x1="1142.0" y1="659.3" x2="1488.0" y2="659.3" stroke="#282C34" stroke-width="1" /><text x="1134.0" y="662.8" fill="#8E96A3" font-size="10.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">10</text>
+    <line x1="1142.0" y1="618.8" x2="1488.0" y2="618.8" stroke="#282C34" stroke-width="1" /><text x="1134.0" y="622.3" fill="#8E96A3" font-size="10.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">12</text>
+    <line x1="1142.0" y1="578.4" x2="1488.0" y2="578.4" stroke="#282C34" stroke-width="1" /><text x="1134.0" y="581.9" fill="#8E96A3" font-size="10.5" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">14</text>
+  <line x1="1142.0" y1="618.8" x2="1488.0" y2="618.8" stroke="#4E9F76" stroke-width="1.5" stroke-dasharray="5 4" /><text x="1146.0" y="611.8" fill="#4E9F76" font-size="10.5" text-anchor="start" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">Threshold = 12</text>
+  <line x1="1185.2" y1="659.3" x2="1185.2" y2="699.8" stroke="#758D92" stroke-width="2" /><rect x="1171.2" y="679.5" width="28" height="5.0" rx="2.5" fill="#758D92" fill-opacity="0.3" stroke="#758D92" stroke-width="1.6" /><text x="1185.2" y="654.3" fill="#F1EDE5" font-size="10" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">H:10 C:9</text><text x="1185.2" y="737.0" fill="#A4ABB6" font-size="10" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">14:30Z</text>
+    <line x1="1271.8" y1="639.1" x2="1271.8" y2="699.8" stroke="#758D92" stroke-width="2" /><rect x="1257.8" y="659.3" width="28" height="5.0" rx="2.5" fill="#758D92" fill-opacity="0.3" stroke="#758D92" stroke-width="1.6" /><text x="1271.8" y="634.1" fill="#F1EDE5" font-size="10" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">H:11 C:10</text><text x="1271.8" y="737.0" fill="#A4ABB6" font-size="10" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">14:31Z</text>
+    <line x1="1358.2" y1="618.8" x2="1358.2" y2="699.8" stroke="#758D92" stroke-width="2" /><rect x="1344.2" y="639.1" width="28" height="5.0" rx="2.5" fill="#758D92" fill-opacity="0.3" stroke="#758D92" stroke-width="1.6" /><text x="1358.2" y="613.8" fill="#F1EDE5" font-size="10" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">H:12 C:11</text><text x="1358.2" y="737.0" fill="#A4ABB6" font-size="10" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">14:32Z</text>
+    <line x1="1444.8" y1="578.4" x2="1444.8" y2="699.8" stroke="#4E9F76" stroke-width="2" /><rect x="1430.8" y="598.6" width="28" height="5.0" rx="2.5" fill="#4E9F76" fill-opacity="0.3" stroke="#4E9F76" stroke-width="1.6" /><text x="1444.8" y="573.4" fill="#F1EDE5" font-size="10" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">H:14 C:13</text><text x="1444.8" y="737.0" fill="#A4ABB6" font-size="10" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">14:33Z</text>
+
+  <!-- Footer -->
+  <text x="76" y="862" fill="#8E96A3" font-size="13" font-weight="600" letter-spacing="1.6" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">ERTÜRK ERYAVUZ</text>
+  <text x="1528" y="862" fill="#7B8391" font-size="12.5" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif">Historical public-data snapshot (2026-11-12) · Synthetic replay fixture · Research only</text>
+</svg>

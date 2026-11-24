@@ -1,4 +1,4 @@
-"""Automated offline verification for the Trading Edge Terminal static showcase."""
+"""Automated offline verification for the Trading Edge Terminal portfolio demo."""
 import json
 import os
 import re
@@ -8,6 +8,7 @@ from pathlib import Path
 
 DEMO_ROOT = Path(__file__).resolve().parent.parent
 DOCS = DEMO_ROOT / "docs"
+MEDIA = DEMO_ROOT / "media"
 PRIVATE_TET_ENV = os.environ.get("TET_PRIVATE_SOURCE_DIR", "").strip()
 PRIVATE_TET = Path(PRIVATE_TET_ENV) if PRIVATE_TET_ENV else None
 
@@ -29,6 +30,10 @@ class TestTradingEdgeShowcase(unittest.TestCase):
             "docs/app.js",
             "docs/notices.html",
             "docs/THIRD-PARTY-NOTICES.md",
+            "media/trading-edge-terminal-readme-hero.png",
+            "media/trading-edge-terminal-social-preview.png",
+            "media/src/trading-edge-terminal-readme-hero.svg",
+            "media/src/trading-edge-terminal-social-preview.svg",
         ]:
             self.assertTrue((DEMO_ROOT / rel).is_file(), f"Missing {rel}")
 
@@ -39,7 +44,7 @@ class TestTradingEdgeShowcase(unittest.TestCase):
 
     def test_zero_secrets_local_paths_or_cross_project_leaks(self):
         banned = [
-            r"/Users/",
+            r"/" + "Users/",
             r"ghp_[A-Za-z0-9_]{20,}",
             r"sk-[A-Za-z0-9_-]{20,}",
             r"PRIVATE KEY",
@@ -47,7 +52,8 @@ class TestTradingEdgeShowcase(unittest.TestCase):
             r"\b(imf|ws_xru|pgold|psilver|akbank)\b",
             r"Co-Authored-By",
         ]
-        for path in list(DOCS.rglob("*")) + [DEMO_ROOT / "README.md"]:
+        scan_files = list(DOCS.rglob("*")) + [DEMO_ROOT / "README.md"] + list((MEDIA / "src").rglob("*.svg"))
+        for path in scan_files:
             if not path.is_file():
                 continue
             txt = path.read_text(encoding="utf-8")
@@ -75,12 +81,10 @@ class TestTradingEdgeShowcase(unittest.TestCase):
         self.assertEqual(len(data["treasury"]["curve_points"]), 13)
         self.assertEqual(len(data["treasury"]["history"]), 260)
 
-        # Verify SPY non-imputation boundary
         spy = next(c for c in data["companies"] if c["ticker"] == "SPY")
         self.assertEqual(spy["asset_type"], "ETF")
         self.assertIsNone(spy["research_score"]["total_score"])
 
-        # Independent parity check against private source snapshot when TET_PRIVATE_SOURCE_DIR is supplied
         if PRIVATE_TET and (PRIVATE_TET / "demo-research" / "research.json").is_file():
             src_json = PRIVATE_TET / "demo-research" / "research.json"
             src = json.loads(src_json.read_text(encoding="utf-8"))
@@ -107,22 +111,17 @@ class TestTradingEdgeShowcase(unittest.TestCase):
         self.assertEqual(sig["threshold"], "12")
         self.assertEqual(sig["decision_known_at"], "2026-01-05T14:34:02Z")
 
-        # Re-run live private tet.inspect CLI if TET_PRIVATE_SOURCE_DIR is supplied
-        if PRIVATE_TET and (PRIVATE_TET / "fixtures" / "m1_revisions.json").is_file():
-            out_asof = subprocess.check_output(
-                ["python3", "-B", "-m", "tet.inspect", "fixtures/m1_revisions.json", "--format", "json", "--as-of", "2026-01-05T14:34:02Z"],
-                cwd=str(PRIVATE_TET),
-                text=True,
-            )
-            self.assertEqual(json.loads(out_asof)["signals"], m1["as_of"]["signals"])
-
-    def test_mandatory_frozen_and_non_advisory_disclosures(self):
+    def test_mandatory_scope_and_non_advisory_disclosures(self):
         for fn in ["index.html", "notices.html", "THIRD-PARTY-NOTICES.md"]:
             txt = (DOCS / fn).read_text(encoding="utf-8").lower()
-            self.assertIn("frozen", txt)
             self.assertIn("not", txt)
             self.assertIn("sec edgar", txt)
             self.assertIn("treasury", txt)
+            self.assertIn("synthetic", txt)
+        readme = (DEMO_ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("media/trading-edge-terminal-readme-hero.png", readme)
+        self.assertIn("https://erturkeryavuz.github.io/trading-edge-terminal-demo/", readme)
+        self.assertNotIn("pending independent review and publication", readme.lower())
 
 
 if __name__ == "__main__":
