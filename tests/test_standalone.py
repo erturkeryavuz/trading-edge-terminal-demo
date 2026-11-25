@@ -182,6 +182,7 @@ class TestStandalonePublicShowcase(unittest.TestCase):
             "rep.calendar.version",
             "window.__TET_TUTORIAL__",
             "clearTutorialTimers",
+            "syncTutorialEntryButtons",
             "restoreState",
             "prefersReducedMotion",
             "resolveActivePhasesForStage",
@@ -213,13 +214,18 @@ class TestStandalonePublicShowcase(unittest.TestCase):
             '"revision-replay"',
         ):
             self.assertIn(f"id: {stage_id}", app_js)
+        # Stage 1 Overview must showcase product intro, live spotlight switch, adaptive 5Y chart, and workflow strip
+        for phase_id in ('"product-intro"', '"spotlight-switch"', '"spotlight-chart"', '"workflow-tour"'):
+            self.assertIn(f"id: {phase_id}", app_js)
         # Stage 7 Revision Replay must explicitly cover As-Of result, As-Of chart, Latest result, and Latest chart
         for phase_id in ('"as-of-result"', '"as-of-chart"', '"latest-result"', '"latest-chart"'):
             self.assertIn(f"id: {phase_id}", app_js)
         # Every demonstrated target anchor referenced by tutorial phases exists in app.js markup
         for anchor in (
-            'id="ov-watchlist-card"',
-            'id="ov-treasury-card"',
+            'id="ov-hero-band"',
+            'id="ov-focal-stage"',
+            'id="ov-focal-chart"',
+            'id="ov-workflow-strip"',
             'id="company-flow-card"',
             'id="company-margin-card"',
             'id="company-stmt-card"',
@@ -247,18 +253,34 @@ class TestStandalonePublicShowcase(unittest.TestCase):
         self.assertEqual(png_dimensions(hero_png), (1600, 900))
         self.assertEqual(png_dimensions(social_png), (1280, 640))
 
-        # Verify artwork SVG values match docs/data.js and exclude process/test counts
-        latest = self.data["treasury"]["latest"]
-        for svg_p in (hero_svg, social_svg):
-            txt = svg_p.read_text(encoding="utf-8")
-            self.assertIn(latest["y10"] + "%", txt)
-            self.assertIn("+" + latest["spread_10y_2y"] + "%", txt)
-            self.assertIn("2026-11-10", txt)
-            self.assertIn("MSFT", txt)
-            self.assertIn("AAPL", txt)
-            self.assertIn("NVDA", txt)
-            for banned_promo in ("250/250", "M2 Unit", "m2u3", "m2-unit4", "7 stages", "Phase"):
-                self.assertNotIn(banned_promo, txt, f"Promotional leakage {banned_promo!r} in {svg_p.name}")
+        # Verify artwork SVG values match docs/data.js and exclude tech badges, process counts, or ambiguous social-preview stats
+        aapl = next(c for c in self.data["companies"] if c["ticker"] == "AAPL")
+        aapl_first = aapl["annual_periods"][-5]
+        aapl_fy = aapl["annual_periods"][-1]
+        aapl_rev_first = f'${Decimal(str(aapl_first["metrics"]["revenue"]["val"])) / Decimal("1e9"):.1f}B'
+        aapl_rev_b = f'${Decimal(str(aapl_fy["metrics"]["revenue"]["val"])) / Decimal("1e9"):.1f}B'
+        aapl_opm_first = f'{Decimal(str(aapl_first["ratios"]["operating_margin_pct"])):.1f}%'
+        aapl_opm = f'{Decimal(str(aapl_fy["ratios"]["operating_margin_pct"])):.1f}%'
+
+        hero_txt = hero_svg.read_text(encoding="utf-8")
+        social_txt = social_svg.read_text(encoding="utf-8")
+        for name, txt in ((hero_svg.name, hero_txt), (social_svg.name, social_txt)):
+            self.assertIn("Trading Edge", txt, name)
+            self.assertIn("Terminal", txt, name)
+            self.assertIn("AAPL", txt, name)
+            self.assertIn("FY22", txt, name)
+            self.assertIn("FY26", txt, name)
+            self.assertIn("Historical snapshot", txt, name)
+            self.assertIn("Research only", txt, name)
+            for banned_promo in ("Python", "SQLite", "XBRL", "250/250", "M2 Unit", "m2u3", "m2-unit4", "7 stages", "Phase"):
+                self.assertNotIn(banned_promo, txt, f"Disallowed promo/badge text {banned_promo!r} in {name}")
+
+        for hero_token in (aapl_rev_first, aapl_rev_b, aapl_opm_first, aapl_opm, "MSFT", "NVDA", "GOOGL", "not investment advice"):
+            self.assertIn(hero_token, hero_txt)
+
+        # Social Preview intentionally excludes ambiguous numeric footer bundles
+        for banned_social in ("Score 91.5", "10Y Treasury", "(+0.25%)"):
+            self.assertNotIn(banned_social, social_txt)
 
     def test_privacy_non_affiliation_and_no_invented_license(self):
         self.assertFalse((DEMO_ROOT / "LICENSE").exists(), "No root LICENSE should exist without owner authorization")

@@ -14,6 +14,7 @@
 
   const STATE = {
     tab: "overview",
+    overviewTicker: "AAPL",
     selectedTicker: "AAPL",
     statementPeriod: "TTM",
     screenerPreset: "all",
@@ -492,65 +493,162 @@
     );
   }
 
-  // ---------- View 1: Overview (Concise Navigational Entry) ----------
-  function renderOverview() {
-    const latestTr = TREASURY.latest || {};
-    const watch = COMPANIES.filter((c) => c.universe_role === "watchlist");
-    const el = document.getElementById("panel-overview");
+  function renderSpotlightComboSvg(company) {
+    const periods = (company && company.annual_periods || []).slice(-5);
+    if (!periods.length) return "";
+    const narrow = typeof window !== "undefined" && window.innerWidth <= 520;
+    const W = narrow ? 440 : 640;
+    const H = narrow ? 205 : 226;
+    const padL = narrow ? 48 : 54;
+    const padR = narrow ? 42 : 48;
+    const padT = 26;
+    const padB = 30;
+    const plotW = W - padL - padR;
+    const plotH = H - padT - padB;
 
+    const revs = periods.map((p) => num(p.metrics && p.metrics.revenue && p.metrics.revenue.val)).map((v) => (v !== null ? v / 1e9 : 0));
+    const opms = periods.map((p) => num(p.ratios && p.ratios.operating_margin_pct));
+    const validOpms = opms.filter((v) => v !== null);
+    const maxRev = Math.max(20, ...revs) * 1.24;
+    const minOpm = Math.max(0, Math.floor((Math.min(...validOpms, 10) - 6) / 5) * 5);
+    const maxOpm = Math.ceil((Math.max(...validOpms, 30) + 6) / 5) * 5;
+    const opmRange = Math.max(5, maxOpm - minOpm);
+
+    const yRev = (v) => padT + ((maxRev - v) / maxRev) * plotH;
+    const yOpm = (v) => padT + ((maxOpm - v) / opmRange) * plotH;
+    const slotW = plotW / periods.length;
+    const barW = Math.min(48, slotW * 0.48);
+
+    let grid = "";
+    for (let i = 0; i <= 3; i++) {
+      const rv = (maxRev * i) / 3;
+      const ov = minOpm + (opmRange * i) / 3;
+      const y = yRev(rv);
+      grid += '<line x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + y.toFixed(1) + '" stroke="#282C34" stroke-width="1" />';
+      grid += '<text x="' + (padL - 8) + '" y="' + (y + 3.5).toFixed(1) + '" fill="#8E96A3" font-size="10.5" text-anchor="end" font-family="monospace">$' + Math.round(rv) + "B</text>";
+      grid += '<text x="' + (W - padR + 8) + '" y="' + (y + 3.5).toFixed(1) + '" fill="#B49A78" font-size="10.5" text-anchor="start" font-family="monospace">' + Math.round(ov) + "%</text>";
+    }
+
+    let bars = "";
+    const linePts = [];
+    periods.forEach((p, idx) => {
+      const cx = padL + idx * slotW + slotW / 2;
+      const rv = revs[idx];
+      const by = yRev(rv);
+      const bh = Math.max(3, (padT + plotH) - by);
+      const isLast = idx === periods.length - 1;
+      const fill = isLast ? "#B49A78" : "#758D92";
+      const op = isLast ? "0.92" : "0.52";
+      bars += '<rect x="' + (cx - barW / 2).toFixed(1) + '" y="' + by.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + bh.toFixed(1) + '" rx="4" fill="' + fill + '" fill-opacity="' + op + '"><title>' + esc(p.period_label + " Revenue: $" + rv.toFixed(1) + "B") + "</title></rect>";
+      bars += '<text x="' + cx.toFixed(1) + '" y="' + (H - 9) + '" fill="' + (isLast ? "#F1EDE5" : "#A4ABB6") + '" font-size="11" font-weight="' + (isLast ? "700" : "500") + '" text-anchor="middle" font-family="monospace">' + esc(p.period_label) + "</text>";
+      if (opms[idx] !== null) {
+        linePts.push({ x: cx, y: yOpm(opms[idx]), v: opms[idx], fy: p.period_label, isLast });
+      }
+    });
+
+    let lineSvg = "";
+    if (linePts.length > 1) {
+      const d = linePts.map((pt, i) => (i === 0 ? "M" : "L") + pt.x.toFixed(1) + "," + pt.y.toFixed(1)).join(" ");
+      lineSvg += '<path d="' + d + '" fill="none" stroke="#F1EDE5" stroke-width="2.4" stroke-linejoin="round" />';
+    }
+    linePts.forEach((pt) => {
+      lineSvg += '<circle cx="' + pt.x.toFixed(1) + '" cy="' + pt.y.toFixed(1) + '" r="' + (pt.isLast ? "4.8" : "3.6") + '" fill="' + (pt.isLast ? "#B49A78" : "#F1EDE5") + '" stroke="#17191D" stroke-width="1.8"><title>' + esc(pt.fy + " Operating Margin: " + pt.v.toFixed(1) + "%") + "</title></circle>";
+      if (pt.isLast) {
+        const lblY = Math.max(13, pt.y - 11);
+        lineSvg += '<text x="' + pt.x.toFixed(1) + '" y="' + lblY.toFixed(1) + '" fill="#F1EDE5" stroke="#15181E" stroke-width="4" stroke-linejoin="round" paint-order="stroke" font-size="11" font-weight="700" text-anchor="middle" font-family="monospace">' + pt.v.toFixed(1) + "%</text>";
+      }
+    });
+
+    return (
+      '<div class="chart-box" id="ov-focal-chart">' +
+      '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Five-year annual revenue and operating margin trajectory for ' + esc(company.name) + '">' +
+      grid + bars + lineSvg +
+      "</svg>" +
+      '<div class="chart-legend">' +
+      '<span><i class="legend-dot" style="background:#758D92"></i>Annual Revenue ($B)</span>' +
+      '<span><i class="legend-dot" style="background:#B49A78"></i>Latest Fiscal Year</span>' +
+      '<span><i class="legend-dot" style="background:#F1EDE5"></i>Operating Margin (%)</span>' +
+      "</div></div>"
+    );
+  }
+
+  // ---------- View 1: Overview (Balanced Product-First Showcase) ----------
+  function renderOverview() {
+    const spotlightList = [
+      { ticker: "AAPL", short: "Apple" },
+      { ticker: "MSFT", short: "Microsoft" },
+      { ticker: "NVDA", short: "NVIDIA" },
+      { ticker: "GOOGL", short: "Alphabet" },
+    ];
+    const active = BY_TICKER[STATE.overviewTicker] || BY_TICKER.AAPL || OPERATING[0];
+    const aps = (active && active.annual_periods) || [];
+    const latestFy = aps.length ? aps[aps.length - 1] : headlinePeriod(active);
+    const fyStart = aps.length ? aps[Math.max(0, aps.length - 5)].period_label : "";
+    const fyEnd = latestFy ? latestFy.period_label : "";
+    const revDisp = latestFy && latestFy.metrics && latestFy.metrics.revenue ? latestFy.metrics.revenue.display : "—";
+    const opmDisp = latestFy && latestFy.ratios ? fmtPct(latestFy.ratios.operating_margin_pct) : "—";
+    const yoyDisp = active && active.growth ? fmtPct(active.growth.revenue_yoy_pct, true) : "—";
+    const scoreVal = active && active.research_score && active.research_score.total_score !== null ? active.research_score.total_score + " / 100" : "—";
+    const tourActive = Boolean(typeof TUT !== "undefined" && TUT.active);
+
+    const el = document.getElementById("panel-overview");
     el.innerHTML =
-      '<div class="section-head"><div>' +
-      "<h2>Research Workspace Overview</h2>" +
-      "<p>Structured SEC EDGAR corporate fundamentals, U.S. Treasury yield curve context, and point-in-time market observation replay.</p>" +
+      '<div class="ov-hero-band" id="ov-hero-band">' +
+      '<div class="ov-intro" id="ov-intro-block">' +
+      '<h2 class="ov-headline">Understand businesses <em>behind the numbers.</em></h2>' +
+      '<p class="ov-lead">Evaluate U.S. companies directly from primary financial filings, inspect every score and risk rule transparently, and explore historical Treasury rates and data revisions in one workspace.</p>' +
+      '<div class="ov-actions">' +
+      '<button type="button" class="btn btn-primary" id="btnOvStartTour"' + (tourActive ? " hidden" : "") + ">Start Guided Tour</button>" +
+      '<button type="button" class="btn" id="btnOvExploreCompanies">Explore Companies</button>' +
+      "</div>" +
+      "</div>" +
+
+      '<div class="ov-spotlight" id="ov-focal-stage">' +
+      '<div class="ov-spot-head">' +
+      '<div class="ov-spot-identity">' +
+      "<h2>" + esc(active.name) + ' <span class="mono" style="color:var(--accent)">' + esc(active.ticker) + "</span></h2>" +
+      "<span>5-Year Revenue &amp; Operating Margin (" + esc(fyStart + "–" + fyEnd) + ")</span>" +
+      "</div>" +
+      '<div class="ov-spot-tabs" role="group" aria-label="Sample company preview selector">' +
+      spotlightList.map((item) =>
+        '<button type="button" class="ov-spot-tab" data-ov-ticker="' + esc(item.ticker) + '" aria-pressed="' + (item.ticker === active.ticker ? "true" : "false") + '">' + esc(item.short) + "</button>"
+      ).join("") +
       "</div></div>" +
 
-      '<div class="grid-overview">' +
-      '<div class="card" id="ov-watchlist-card">' +
-      "<h3>Core Watchlist (Snapshot 2026-11-12)</h3>" +
-      '<p class="card-sub">Select an issuer to inspect normalized SEC EDGAR statements, provenance tags, and 5-year trajectories. SPY illustrates non-imputed ETF boundaries.</p>' +
-      '<div class="table-wrap"><table><thead><tr>' +
-      "<th>Ticker</th><th>Issuer</th><th>Latest Form</th><th class=\"num\">TTM Revenue</th><th class=\"num\">Op Margin</th><th class=\"num\">TTM FCF</th><th class=\"num\">Score</th><th></th>" +
-      "</tr></thead><tbody>" +
-      watch.map((c) => {
-        const isReady = c.availability_status === "ready";
-        const rev = isReady && c.ttm && c.ttm.metrics.revenue ? c.ttm.metrics.revenue.display : "—";
-        const opm = isReady && c.ttm && c.ttm.ratios ? fmtPct(c.ttm.ratios.operating_margin_pct) : "—";
-        const fcf = isReady && c.ttm && c.ttm.metrics.free_cash_flow ? c.ttm.metrics.free_cash_flow.display : "—";
-        const fcfClass = isReady && c.ttm && c.ttm.metrics.free_cash_flow && num(c.ttm.metrics.free_cash_flow.val) < 0 ? " neg" : "";
-        const sc = c.research_score && c.research_score.total_score !== null ? c.research_score.total_score + " / 100" : "Excluded (ETF)";
-        return (
-          "<tr>" +
-          '<td class="mono"><strong>' + esc(c.ticker) + "</strong></td>" +
-          "<td>" + esc(c.name) + "</td>" +
-          '<td style="white-space:nowrap">' + (isReady ? '<span class="pill pill-reported">' + esc(c.reporting_context.latest_form) + '</span> <span class="mono muted">' + esc(c.reporting_context.latest_filing_date) + "</span>" : '<span class="pill pill-info">ETF / Fund</span>') + "</td>" +
-          '<td class="num">' + esc(rev) + "</td>" +
-          '<td class="num">' + esc(opm) + "</td>" +
-          '<td class="num' + fcfClass + '">' + esc(fcf) + "</td>" +
-          '<td class="num">' + esc(sc) + "</td>" +
-          '<td><button type="button" class="btn btn-sm" data-inspect="' + esc(c.ticker) + '">Inspect</button></td>' +
-          "</tr>"
-        );
-      }).join("") +
-      "</tbody></table></div></div>" +
+      '<div class="ov-spot-summary" id="ov-spot-summary">' +
+      '<span>' + esc(fyEnd) + ' Revenue <strong>' + esc(revDisp) + '</strong> <em class="muted">(' + esc(yoyDisp) + ' YoY)</em></span>' +
+      '<span>Operating Margin <strong>' + esc(opmDisp) + "</strong></span>" +
+      '<span>Accounting Score <strong>' + esc(scoreVal) + "</strong></span>" +
+      "</div>" +
 
-      '<div class="card" id="ov-treasury-card">' +
-      "<h3>U.S. Treasury Par Curve (" + esc(latestTr.rate_date) + ")</h3>" +
-      '<p class="card-sub">10Y <strong>' + esc(latestTr.y10) + "%</strong> · 2Y <strong>" + esc(latestTr.y2) + "%</strong> · 10Y–2Y Spread <strong class=\"" + (num(latestTr.spread_10y_2y) < 0 ? "neg" : "pos") + '">' + esc(latestTr.spread_10y_2y) + "%</strong></p>" +
-      renderTreasuryCurveSvg(TREASURY.curve_points, true) +
-      '<div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:8px">' +
-      '<span class="muted" style="font-size:12px">' + esc(TREASURY.regime_note) + "</span>" +
-      '<button type="button" class="btn btn-sm" data-jump="treasury">Open Curve</button>' +
+      renderSpotlightComboSvg(active) +
+
+      '<div class="ov-spot-foot">' +
+      "<span>Historical snapshot (Nov 2026) · Research only</span>" +
+      '<button type="button" class="btn btn-sm" id="btnOvInspectActive">Open Full Profile →</button>' +
       "</div></div>" +
       "</div>" +
 
-      '<div class="grid-3">' +
-      '<div class="card workflow-card"><div><h3>Financial Screener &amp; Peers</h3><p>Filter 17 operating companies with deterministic GAAP presets, custom thresholds, and fiscal-period alignment warnings.</p></div><div><button type="button" class="btn btn-sm" data-jump="screener">Open Screener</button></div></div>' +
-      '<div class="card workflow-card"><div><h3>Accounting Score &amp; Risk Audit</h3><p>Inspect 7-component GAAP score weights, two-company component deltas, and 22 filing-backed risk findings.</p></div><div><button type="button" class="btn btn-sm" data-jump="evaluation">Open Scoring &amp; Risks</button></div></div>' +
-      '<div class="card workflow-card"><div><h3>Point-in-Time Revision Replay</h3><p>Compare As-Of vs. Latest breakout evaluation on a synthetic 1-minute bar ledger with delayed corrections and NYSE RTH calendar rules.</p></div><div><button type="button" class="btn btn-sm" data-jump="replay">Open Revision Replay</button></div></div>' +
-      "</div>";
+      '<div class="ov-wf-section">' +
+      '<div class="ov-wf-heading">Research Workflows</div>' +
+      '<div class="ov-workflow-grid" id="ov-workflow-strip">' +
+      '<div class="ov-wf-card"><div><h3>Screener &amp; Peers</h3><p>Filter 17 operating companies by cash flow, margins, or balance-sheet criteria with calendar-aligned peer checks.</p></div><div class="ov-wf-foot"><button type="button" class="btn btn-sm" data-jump="screener">Open Screener</button></div></div>' +
+      '<div class="ov-wf-card"><div><h3>Scoring &amp; Risks</h3><p>Compare seven weighted accounting criteria side by side and review filing-backed risk findings with verification notes.</p></div><div class="ov-wf-foot"><button type="button" class="btn btn-sm" data-jump="evaluation">Open Scoring &amp; Risks</button></div></div>' +
+      '<div class="ov-wf-card"><div><h3>Treasury Yields</h3><p>Explore the 13-maturity U.S. Treasury par curve and scrub a year of daily rate and spread history.</p></div><div class="ov-wf-foot"><button type="button" class="btn btn-sm" data-jump="treasury">Open Treasury</button></div></div>' +
+      '<div class="ov-wf-card"><div><h3>Revision Replay</h3><p>Compare As-Of and Latest breakout rules on a synthetic bar ledger to see how delayed corrections alter historical outcomes.</p></div><div class="ov-wf-foot"><button type="button" class="btn btn-sm" data-jump="replay">Open Replay</button></div></div>' +
+      "</div></div>";
 
-    el.querySelectorAll("[data-inspect]").forEach((b) => {
-      b.addEventListener("click", () => inspectCompany(b.dataset.inspect));
+    const btnTour = document.getElementById("btnOvStartTour");
+    if (btnTour) btnTour.addEventListener("click", startTutorial);
+    const btnAll = document.getElementById("btnOvExploreCompanies");
+    if (btnAll) btnAll.addEventListener("click", () => switchTab("company"));
+    const btnInspect = document.getElementById("btnOvInspectActive");
+    if (btnInspect) btnInspect.addEventListener("click", () => inspectCompany(active.ticker));
+    el.querySelectorAll("[data-ov-ticker]").forEach((b) => {
+      b.addEventListener("click", () => {
+        STATE.overviewTicker = b.dataset.ovTicker;
+        renderOverview();
+      });
     });
     el.querySelectorAll("[data-jump]").forEach((b) => {
       b.addEventListener("click", () => switchTab(b.dataset.jump));
@@ -682,8 +780,8 @@
     }
 
     el.innerHTML =
-      '<div class="section-head"><div><h2>Company Fundamentals (SEC EDGAR XBRL)</h2>' +
-      "<p>Inspect normalized TTM and multi-year GAAP statements across 17 U.S. operating companies plus the SPY ETF coverage boundary (snapshot 2026-11-12).</p></div></div>" +
+      '<div class="section-head"><div><h2>Company Analysis</h2>' +
+      "<p>Explore multi-year performance, normalized financial statements, and official SEC filings across 17 companies plus the SPY ETF boundary.</p></div></div>" +
       '<div class="chip-row" role="group" aria-label="Select company">' + chips + "</div>" +
       body;
 
@@ -814,10 +912,10 @@
 
     el.innerHTML =
       '<div class="section-head"><div><h2>Financial Screener &amp; Peer Comparison</h2>' +
-      "<p>Rule-based GAAP screening across 17 operating companies (SPY excluded cleanly) and alignment-aware peer comparison.</p></div></div>" +
+      "<p>Screen operating companies by profitability, cash flow, and balance-sheet criteria, then compare peers with automatic fiscal-calendar alignment checks.</p></div></div>" +
 
       '<div class="card" id="screener-main-card">' +
-      "<h3>GAAP Financial Screener (" + rows.length + " / " + OPERATING.length + " matched · " + esc(pMode === "FY" ? "Latest FY" : "TTM") + ")</h3>" +
+      "<h3>Company Screener (" + rows.length + " / " + OPERATING.length + " matched · " + esc(pMode === "FY" ? "Latest FY" : "TTM") + ")</h3>" +
       '<div class="controls-bar">' +
       '<div class="control-group"><label for="scr-preset">Strategy Preset</label><select id="scr-preset">' +
       '<option value="all"' + (STATE.screenerPreset === "all" ? " selected" : "") + ">All 17 Operating Companies</option>" +
@@ -937,8 +1035,8 @@
 
     const headerHtml =
       '<div class="section-head"><div>' +
-      "<h2>Explainable Accounting Score &amp; Risk Inspector</h2>" +
-      "<p>Transparent 7-component GAAP research heuristic and source-backed accounting risk audit rules.</p>" +
+      "<h2>Accounting Score &amp; Risk Inspector</h2>" +
+      "<p>Compare companies across seven weighted financial criteria and review filing-backed accounting risk flags.</p>" +
       "</div></div>" +
       '<div class="segment-bar" role="group" aria-label="Evaluation module">' +
       '<button type="button" class="segment-btn" id="seg-score" aria-pressed="' + (isScore ? "true" : "false") + '">Accounting Score (7 Components)</button>' +
@@ -1271,27 +1369,55 @@
   const TUTORIAL_STAGES = [
     {
       id: "overview",
-      title: "Watchlist & Treasury Context",
+      title: "Welcome to Trading Edge Terminal",
       phases: [
         {
-          id: "watchlist",
-          label: "Watchlist",
-          narration: "Core watchlist showing dated SEC EDGAR filings (AAPL–GOOGL) and SPY's non-imputed ETF boundary.",
-          targetSelector: "#ov-watchlist-card .table-wrap",
-          desktopSelector: "#ov-watchlist-card",
+          id: "product-intro",
+          label: "Overview",
+          narration: "Trading Edge Terminal brings multi-year company fundamentals, screening, accounting risks, and Treasury yields into one workspace.",
+          targetSelector: "#ov-focal-stage",
+          desktopSelector: "#ov-hero-band",
           durationMs: 4200,
           apply: function () {
+            STATE.overviewTicker = "AAPL";
             switchTab("overview");
           },
         },
         {
-          id: "treasury-mini",
-          label: "Yield Curve",
-          narration: "Alongside the watchlist sits the U.S. Treasury 13-tenor par yield curve (10Y 4.98%, 10Y–2Y +0.25%).",
-          targetSelector: "#ov-treasury-card",
-          checkSelector: "#ov-treasury-card svg",
+          id: "spotlight-switch",
+          label: "Switch Company",
+          narration: "Switch companies directly from the Overview—selecting NVIDIA shows five-year revenue growth to $215.9B and a 60.4% operating margin.",
+          targetSelector: "#ov-focal-stage",
+          desktopSelector: "#ov-hero-band",
+          durationMs: 3800,
+          apply: function () {
+            STATE.overviewTicker = "NVDA";
+            switchTab("overview");
+          },
+        },
+        {
+          id: "spotlight-chart",
+          label: "5Y Chart",
+          narration: "The five-year revenue and operating margin chart updates directly when selecting NVIDIA (FY2022–FY2026).",
+          targetSelector: "#ov-focal-chart",
+          checkSelector: "#ov-focal-chart svg",
           onlyIfClipped: true,
-          durationMs: 3600,
+          durationMs: 3400,
+          apply: function () {
+            if (STATE.tab !== "overview" || STATE.overviewTicker !== "NVDA") {
+              STATE.overviewTicker = "NVDA";
+              switchTab("overview");
+            }
+          },
+        },
+        {
+          id: "workflow-tour",
+          label: "Workflows",
+          narration: "Open any research workflow directly from the Overview: screening, scoring and risks, Treasury yields, or revision replay.",
+          targetSelector: "#ov-workflow-strip",
+          checkSelector: "#ov-workflow-strip",
+          onlyIfClipped: true,
+          durationMs: 3400,
           apply: function () {
             if (STATE.tab !== "overview") switchTab("overview");
           },
@@ -1387,7 +1513,7 @@
         {
           id: "score-delta",
           label: "AAPL vs MSFT",
-          narration: "Live two-company component delta compares AAPL (91.5) against MSFT (92) across 7 GAAP categories (-0.5 pts).",
+          narration: "Side-by-side component delta compares AAPL (91.5) against MSFT (92) across 7 GAAP categories (-0.5 pts).",
           targetSelector: "#score-compare-table",
           desktopSelector: "#score-compare-card",
           durationMs: 4000,
@@ -1626,6 +1752,13 @@
     return (st && st.phases && st.phases[0]) || null;
   }
 
+  function syncTutorialEntryButtons() {
+    const btnHeader = document.getElementById("btnWatchTutorial");
+    if (btnHeader) btnHeader.hidden = TUT.active;
+    const btnOverview = document.getElementById("btnOvStartTour");
+    if (btnOverview) btnOverview.hidden = TUT.active;
+  }
+
   function updateTutorialChrome() {
     const dock = document.getElementById("tutorialDock");
     const badge = document.getElementById("tutStepBadge");
@@ -1639,6 +1772,7 @@
     const btnNext = document.getElementById("btnTutNext");
     const btnRestart = document.getElementById("btnTutRestart");
 
+    syncTutorialEntryButtons();
     if (!dock) return;
     dock.hidden = !TUT.active;
     if (!TUT.active) return;
@@ -1781,10 +1915,9 @@
   }
 
   function startTutorial() {
-    if (!TUT.active) {
-      TUT.savedManualState = cloneState();
-      TUT.savedScrollY = window.scrollY || 0;
-    }
+    if (TUT.active) return;
+    TUT.savedManualState = cloneState();
+    TUT.savedScrollY = window.scrollY || 0;
     TUT.active = true;
     TUT.playing = true;
     TUT.completed = false;
@@ -1871,6 +2004,7 @@
     }, { passive: true });
 
     window.addEventListener("resize", () => {
+      if (STATE.tab === "overview") renderOverview();
       if (STATE.tab === "replay") renderReplay();
       if (!TUT.active) return;
       if (TUT.resizeTimerId !== null) clearTimeout(TUT.resizeTimerId);
@@ -1880,6 +2014,7 @@
         if (!TUT.active) return;
         const st = TUTORIAL_STAGES[TUT.stageIndex];
         const prevPhaseId = (currentPhase() && currentPhase().id) || null;
+        if (STATE.tab === "overview") renderOverview();
         if (STATE.tab === "replay") renderReplay();
         TUT.activePhases = resolveActivePhasesForStage(st);
         const matchedIdx = TUT.activePhases.findIndex((p) => p.id === prevPhaseId);
@@ -1909,6 +2044,7 @@
         userScrolledAway: TUT.userScrolledAway,
         runToken: TUT.runToken,
         tab: STATE.tab,
+        overviewTicker: STATE.overviewTicker,
         evalSubView: STATE.evalSubView,
         selectedTicker: STATE.selectedTicker,
         statementPeriod: STATE.statementPeriod,

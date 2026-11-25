@@ -2,7 +2,7 @@
 
 ![Trading Edge Terminal](media/trading-edge-terminal-readme-hero.png)
 
-**Trading Edge Terminal** is a local-first U.S. financial research and market-observation engineering platform built with Python 3.9+ standard library and SQLite. It brings together normalized SEC EDGAR XBRL corporate fundamentals, U.S. Department of the Treasury daily par yield curves, explainable GAAP screening and scoring, filing-backed risk audits, and a point-in-time (`as-of`) market observation replay engine.
+**Trading Edge Terminal** is a transparent financial research workspace built around primary corporate filings and historical market data. It brings multi-year company analysis, peer screening, explainable accounting scores, risk checks, U.S. Treasury yield context, and point-in-time revision replay into one cohesive workflow.
 
 > **Interactive Browser Preview:** [https://erturkeryavuz.github.io/trading-edge-terminal-demo/](https://erturkeryavuz.github.io/trading-edge-terminal-demo/) — static browser preview hosted via GitHub Pages (also runnable locally via the command below).
 
@@ -10,10 +10,10 @@
 
 ## Core Capabilities
 
-- **SEC EDGAR Fundamental Research:** Normalizes Trailing Twelve Months (TTM) and multi-year Annual (`FY`) financial statements across 17 U.S. operating companies (`AAPL`, `MSFT`, `NVDA`, `AMZN`, `GOOGL`, `ORCL`, `WMT`, `COST`, `CSCO`, `ADBE`, `PG`, `HD`, `CRM`, `INTC`, `TXN`, `KO`, `AMD`), distinguishing `[REPORTED]` XBRL disclosures from `[DERIVED]` metrics, tracking YoY change drivers, and linking directly to official SEC EDGAR filings. `SPY` is included to demonstrate explicit ETF/fund non-imputation boundaries.
-- **Financial Screener & Peer Comparison:** Evaluates four built-in GAAP accounting presets (`Balance-Sheet Strength`, `Cash Flow Quality`, `Financial Deterioration Watch`, `Growth & Profitability`), `TTM` vs. `Latest FY` period modes, custom numeric/boolean filters, sortable columns, and multi-company peer comparison with automatic fiscal-period offset warnings (`> 45` days).
-- **Explainable Accounting Score:** Transparent `0–100` seven-component GAAP research heuristic showing every component weight, observed accounting input, missing-weight exclusion (zero fabricated imputation), and live two-company component delta breakdown.
-- **Rule-Based Risk Inspector:** Structured, filing-backed accounting risk findings reporting each rule's measurement criteria, caveats, verification steps, reporting periods, and official SEC filing links.
+- **Company Fundamental Analysis:** Examines Trailing Twelve Months (TTM) and multi-year Annual (`FY`) financial statements across 17 U.S. operating companies (`AAPL`, `MSFT`, `NVDA`, `AMZN`, `GOOGL`, `ORCL`, `WMT`, `COST`, `CSCO`, `ADBE`, `PG`, `HD`, `CRM`, `INTC`, `TXN`, `KO`, `AMD`), separating `[REPORTED]` SEC EDGAR XBRL disclosures from `[DERIVED]` metrics, tracking YoY change drivers, and linking directly to official filings. `SPY` is included to demonstrate explicit ETF/fund non-imputation boundaries.
+- **Company Screener & Peer Comparison:** Evaluates four built-in accounting presets (`Balance-Sheet Strength`, `Cash Flow Quality`, `Financial Deterioration Watch`, `Growth & Profitability`), `TTM` vs. `Latest FY` period modes, custom numeric/boolean filters, sortable columns, and multi-company peer comparison with automatic fiscal-period offset warnings (`> 45` days).
+- **Explainable Accounting Score:** Transparent `0–100` seven-component GAAP research heuristic showing every component weight, observed accounting input, missing-weight exclusion (zero fabricated imputation), and side-by-side two-company component delta breakdown.
+- **Filing-Backed Risk Inspector:** Structured accounting risk findings reporting each rule's measurement criteria, caveats, verification steps, reporting periods, and official SEC filing links.
 - **U.S. Treasury Yield Curve Context:** Full 13-tenor (`1M`–`30Y`) Daily Treasury Par Yield Curve (`2026-11-10`) paired with a 260-day interactive historical trajectory scrubber tracking `10Y`, `2Y`, `3M` rates and exact `10Y–2Y` / `10Y–3M` spreads.
 - **Point-in-Time Observation & Revision Replay:** Demonstrates strict anti-lookahead replay on a synthetic 1-minute OHLCV ledger (`fixture:TEST`) with idempotent duplicate handling, delayed bar corrections (`12 → 15`), bounded NYSE `2026–2027` Regular Trading Hours calendar rules (`US-RTH-2026-2027/v1`), and side-by-side **As-Of** vs. **Latest** breakout evaluation.
 
